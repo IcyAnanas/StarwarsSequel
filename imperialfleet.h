@@ -3,7 +3,9 @@
 
 #include <cassert>
 
-template <typename ShieldPoints, typename AttackPower>
+using ShieldPoints = int;
+using AttackPower = int;
+
 class ImperialStarship {
     ShieldPoints shield_points;
     AttackPower attack_power;
@@ -18,24 +20,20 @@ public:
     bool isAlive() const;
 };
 
-template <typename ShieldPoints, typename AttackPower>
-class DeathStar : public ImperialStarship<ShieldPoints, AttackPower> {
+class DeathStar : public ImperialStarship {
 public:
     DeathStar(ShieldPoints shield_points, AttackPower attack_power);
 };
 
-template <typename ShieldPoints, typename AttackPower>
-class ImperialDestroyer : public ImperialStarship<ShieldPoints, AttackPower> {
+class ImperialDestroyer : public ImperialStarship {
 public:
     ImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power);
 };
 
-template <typename ShieldPoints, typename AttackPower>
-class TIEFighter : public ImperialStarship<ShieldPoints, AttackPower> {
+class TIEFighter : public ImperialStarship {
     TIEFighter(ShieldPoints shield_points, AttackPower attack_power);
 };
 
-template <typename ShieldPoints, typename AttackPower>
 class Squadron {
 
 public:
@@ -47,22 +45,18 @@ public:
 
 
 // ImperialStarship
-template <typename ShieldPoints, typename AttackPower>
-ImperialStarship<ShieldPoints, AttackPower>::ImperialStarship(ShieldPoints shield_points, AttackPower attack_power) :
+ImperialStarship::ImperialStarship(ShieldPoints shield_points, AttackPower attack_power) :
     shield_points(shield_points), attack_power(attack_power) {}
 
-template <typename ShieldPoints, typename AttackPower>
-ShieldPoints ImperialStarship<ShieldPoints, AttackPower>::getShield() const {
+ShieldPoints ImperialStarship::getShield() const {
     return shield_points;
 }
 
-template <typename ShieldPoints, typename AttackPower>
-AttackPower ImperialStarship<ShieldPoints, AttackPower>::getAttackPower() const {
+AttackPower ImperialStarship::getAttackPower() const {
     return attack_power;
 }
 
-template <typename ShieldPoints, typename AttackPower>
-void ImperialStarship<ShieldPoints, AttackPower>::takeDamage(AttackPower damage) {
+void ImperialStarship::takeDamage(AttackPower damage) {
     if(shield_points <= damage) {
         shield_points = ShieldPoints{0};
     }
@@ -71,25 +65,9 @@ void ImperialStarship<ShieldPoints, AttackPower>::takeDamage(AttackPower damage)
     }
 }
 
-template <typename ShieldPoints, typename AttackPower>
-bool ImperialStarship<ShieldPoints, AttackPower>::isAlive() const {
+bool ImperialStarship::isAlive() const {
     return shield_points > 0;
 }
-
-// DeathStar
-template <typename ShieldPoints, typename AttackPower>
-DeathStar<ShieldPoints, AttackPower>::DeathStar(ShieldPoints shield_points, AttackPower attack_power) :
-    ImperialStarship<ShieldPoints, AttackPower>(shield_points, attack_power) {}
-
-// ImperialDestroyer
-template <typename ShieldPoints, typename AttackPower>
-ImperialDestroyer<ShieldPoints, AttackPower>::ImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power) :
-    ImperialStarship<ShieldPoints, AttackPower>(shield_points, attack_power) {}
-
-// TIEFIGHTER
-template <typename ShieldPoints, typename AttackPower>
-TIEFighter<ShieldPoints, AttackPower>::TIEFighter(ShieldPoints shield_points, AttackPower attack_power) :
-    ImperialStarship<ShieldPoints, AttackPower>(shield_points, attack_power) {}
 
 
 #endif //_IMPERIALFLEET_H_
