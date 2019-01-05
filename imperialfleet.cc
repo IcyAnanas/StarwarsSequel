@@ -65,6 +65,7 @@ Squadron::Squadron(const std::vector<ImperialStarship>& ships) : ships(ships) {
 // todo
 // wouldn't it be better if we implemented a ctor for vector&& and use move then?
 // because the creation of a new vector seems like using one too many vectors...
+// or even to totally erase destroyed ships from Squadron
 Squadron::Squadron(const std::initializer_list<ImperialStarship>& ships) :
     Squadron(std::vector<ImperialStarship>(ships)) {}
 
@@ -76,9 +77,23 @@ AttackPower Squadron::getAttackPower() const {
     return total_attack_power;
 }
 
-void Squadron::takeDamage(AttackPower damage) {}
+void Squadron::takeDamage(AttackPower damage) {
+    for(auto& ship : ships) {
+        if(ship.isAlive()) {
+            if(ship.getShield() <= static_cast<ShieldPoints>(damage)) {
+                total_shield -= ship.getShield();
+                total_attack_power -= ship.getAttackPower();
+                --alive;
+            }
+            else {
+                total_shield -= damage;
+            }
+            ship.takeDamage(damage);
+        }
+    }
+}
 
-// clang suggested to move it instead
+// clang suggested to move it instead - we could write a moving function as well, but do we really need to?
 Squadron createSquadron(const std::vector<ImperialStarship>& ships) {
     return Squadron(ships);
 }

@@ -10,6 +10,10 @@ private:
     T t0;
     T t1;
 
+    class Builder {
+
+    };
+
 public:
     SpaceBattle() = default;
     std::size_t countImperialFleet();
