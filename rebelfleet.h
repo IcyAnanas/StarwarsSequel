@@ -8,6 +8,9 @@ using Speed = int;
 using ShieldPoints = int;
 using AttackPower = int;
 
+// todo - ctors with const references, move maybe?
+// todo - no templates?
+
 class RebelStarship {
 protected:
     const Speed speed;
@@ -22,6 +25,8 @@ public:
 
     void takeDamage(AttackPower damage);
     bool isAlive() const;
+
+    virtual ~RebelStarship() = default;
 };
 
 class Attacker : public RebelStarship {
@@ -29,6 +34,7 @@ class Attacker : public RebelStarship {
 public:
     AttackPower getAttackPower() const;
     Attacker(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
+    virtual ~Attacker() = default;
 };
 
 class Explorer : public RebelStarship {
@@ -61,5 +67,10 @@ protected:
 public:
     XWing(ShieldPoints, Speed, AttackPower);
 };
+
+// todo - const references? return pointers? is that OK at all?
+StarCruiser createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
+XWing createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
+Explorer createExplorer(ShieldPoints shield_points, Speed speed);
 
 #endif // _REBELFLEET_H_

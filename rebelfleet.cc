@@ -38,6 +38,9 @@ Explorer::Explorer(ShieldPoints shield_points, Speed speed) :
     checkSpeed();
 }
 
+Explorer createExplorer(ShieldPoints shield_points, Speed speed) {
+    return Explorer{shield_points, speed};
+}
 
 // StarCruiser
 StarCruiser::StarCruiser(
@@ -46,8 +49,17 @@ StarCruiser::StarCruiser(
     checkSpeed();
 }
 
+StarCruiser createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power) {
+    return StarCruiser{shield_points, speed, attack_power};
+}
+
 // XWing
 XWing::XWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power) :
         Attacker::Attacker(shield_points, speed, attack_power) {
     checkSpeed();
 }
+
+XWing createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power) {
+    return XWing{shield_points, speed, attack_power};
+}
+
