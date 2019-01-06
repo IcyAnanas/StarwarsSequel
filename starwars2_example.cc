@@ -21,13 +21,14 @@ int main() {
 //    std::cout << squadron.getShield() << std::endl;
 //    std::cout << squadron.getAttackPower() << std::endl;
 
-    /*auto battle = SpaceBattle::Builder()
-        .ship(squadron)
+    auto battle = SpaceBattle::Builder()
+        .ship(squadron);
         .startTime(2)
         .maxTime(23)
-        .ship(xwing)
+        .ship(xwing);
         .ship(explorer)
         .build();
+    /*
 
     assert(battle.countRebelFleet() == 2);
     assert(battle.countImperialFleet() == 2);

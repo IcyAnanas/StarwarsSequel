@@ -15,7 +15,7 @@ class RebelStarship {
 protected:
     const Speed speed;
     ShieldPoints shield_points;
-    virtual void checkSpeed() = 0;
+    virtual void checkSpeed();
 
 public:
     RebelStarship(ShieldPoints shield_points, Speed speed);
@@ -47,6 +47,8 @@ public:
     Explorer(ShieldPoints, Speed);
 };
 
+Explorer* createExplorer(ShieldPoints shield_points, Speed speed);
+
 class StarCruiser : public Attacker {
 protected:
     void checkSpeed() override {
@@ -56,6 +58,8 @@ protected:
 public:
     StarCruiser(ShieldPoints, Speed, AttackPower);
 };
+
+StarCruiser* createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
 
 
 class XWing : public Attacker {
@@ -68,9 +72,6 @@ public:
     XWing(ShieldPoints, Speed, AttackPower);
 };
 
-// todo - const references? return pointers? is that OK at all?
-StarCruiser createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
-XWing createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
-Explorer createExplorer(ShieldPoints shield_points, Speed speed);
+XWing* createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
 
 #endif // _REBELFLEET_H_

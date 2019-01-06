@@ -8,6 +8,7 @@ using ShieldPoints = int;
 using AttackPower = int;
 
 class ImperialStarship {
+protected:
     ShieldPoints shield_points;
     AttackPower attack_power;
 
@@ -17,7 +18,7 @@ public:
     ShieldPoints getShield() const;
     AttackPower getAttackPower() const;
 
-    void takeDamage(AttackPower damage);
+    virtual void takeDamage(AttackPower damage);
     bool isAlive() const;
 
     virtual ~ImperialStarship() = default;
@@ -28,39 +29,37 @@ public:
     DeathStar(ShieldPoints shield_points, AttackPower attack_power);
 };
 
-DeathStar createDeathStar(ShieldPoints shield_points, AttackPower attack_power);
+DeathStar* createDeathStar(ShieldPoints shield_points, AttackPower attack_power);
 
 class ImperialDestroyer : public ImperialStarship {
 public:
     ImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power);
 };
 
-ImperialDestroyer createImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power);
+ImperialDestroyer* createImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power);
 
 class TIEFighter : public ImperialStarship {
 public:
     TIEFighter(ShieldPoints shield_points, AttackPower attack_power);
 };
 
-TIEFighter createTIEFighter(ShieldPoints shield_points, AttackPower attack_power);
+TIEFighter* createTIEFighter(ShieldPoints shield_points, AttackPower attack_power);
 
-class Squadron {
-    std::vector<ImperialStarship> ships;
+class Squadron : public ImperialStarship{
+    //todo - reference or not?
+    const std::vector<ImperialStarship*> ships;
     int alive = 0;
-    ShieldPoints total_shield = ShieldPoints{0};
-    AttackPower total_attack_power = AttackPower{0};
 
 public:
-    explicit Squadron(const std::vector<ImperialStarship>& ships); // won't the compiler automatically cast initializer_list on vector?
-    Squadron(const std::initializer_list<ImperialStarship>& ships);
+    Squadron(const std::vector<ImperialStarship*>& ships);
+    //Squadron(const std::initializer_list<ImperialStarship>& ships);
 
-    ShieldPoints getShield() const;
-    AttackPower getAttackPower() const;
-    void takeDamage(AttackPower damage);
+    const int& numberOfAliveShips() const;
+    void takeDamage(AttackPower damage) override;
 };
 
-Squadron createSquadron(const std::vector<ImperialStarship>& ships);
+Squadron* createSquadron(const std::vector<ImperialStarship*>& ships);
 
-Squadron createSquadron(const std::initializer_list<ImperialStarship>& ships);
+//Squadron* createSquadron(const std::initializer_list<ImperialStarship*>& ships);
 
 #endif //_IMPERIALFLEET_H_
