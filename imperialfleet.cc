@@ -6,10 +6,15 @@ ImperialStarship::ImperialStarship(ShieldPoints shield_points, AttackPower attac
     Attacker(shield_points, attack_power) {
 }
 
+SingleImperialShip::SingleImperialShip(ShieldPoints shield_points, AttackPower attack_power) :
+    Starship(shield_points),
+    ImperialStarship(shield_points, attack_power) {
+}
+
 // DeathStar
 DeathStar::DeathStar(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
-    ImperialStarship(shield_points, attack_power) {}
+    SingleImperialShip(shield_points, attack_power) {}
 
 std::shared_ptr<ImperialStarship> createDeathStar(ShieldPoints shield_points, AttackPower attack_power) {
     return std::make_shared<DeathStar>(DeathStar(shield_points, attack_power));
@@ -19,7 +24,7 @@ std::shared_ptr<ImperialStarship> createDeathStar(ShieldPoints shield_points, At
 // ImperialDestroyer
 ImperialDestroyer::ImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
-    ImperialStarship(shield_points, attack_power) {}
+    SingleImperialShip(shield_points, attack_power) {}
 
 std::shared_ptr<ImperialStarship> createImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power) {
     return std::make_shared<ImperialDestroyer>(ImperialDestroyer(shield_points, attack_power));
@@ -28,7 +33,7 @@ std::shared_ptr<ImperialStarship> createImperialDestroyer(ShieldPoints shield_po
 // TIEFighter
 TIEFighter::TIEFighter(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
-    ImperialStarship(shield_points, attack_power) {}
+    SingleImperialShip(shield_points, attack_power) {}
 
 std::shared_ptr<ImperialStarship> createTIEFighter(ShieldPoints shield_points, AttackPower attack_power) {
     return std::make_shared<TIEFighter>(TIEFighter(shield_points, attack_power));
@@ -36,9 +41,10 @@ std::shared_ptr<ImperialStarship> createTIEFighter(ShieldPoints shield_points, A
 
 // Squadron
 // todo - brute or smart? (keeping alive&dead in 2 separates structures === smart)
-Squadron::Squadron(const std::vector<ImperialStarship*>& ships) :
+Squadron::Squadron(const std::vector<std::shared_ptr<SingleImperialShip>>& ships) :
 Starship(shield_points),
-ImperialStarship(ShieldPoints{0}, AttackPower{0}), ships(ships) {
+ImperialStarship(ShieldPoints{0}, AttackPower{0}),
+ships(ships) {
     for (const auto ship : ships) {
         if(ship->isAlive()) {
             ++alive;
@@ -76,11 +82,11 @@ const int& Squadron::numberOfAliveShips() const {
 }
 
 // clang suggested to move it instead - we could write a moving function as well, but do we really need to?
-std::shared_ptr<ImperialStarship> createSquadron(const std::vector<ImperialStarship*>& ships) {
+std::shared_ptr<ImperialStarship> createSquadron(const std::vector<std::shared_ptr<SingleImperialShip>>& ships) {
     return std::make_shared<Squadron>(Squadron(ships));
 }
 
-// todo - casting initializer_list on a vector - not sure whether it's completely valid
-std::shared_ptr<ImperialStarship> createSquadron(const std::initializer_list<ImperialStarship*>& ships) {
-    return createSquadron(std::vector<ImperialStarship*>(ships));
-}
+//// todo - casting initializer_list on a vector - not sure whether it's completely valid
+//std::shared_ptr<ImperialStarship> createSquadron(const std::initializer_list<ImperialStarship*>& ships) {
+//    return createSquadron(std::vector<ImperialStarship*>(ships));
+//}

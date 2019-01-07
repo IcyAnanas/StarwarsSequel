@@ -2,34 +2,65 @@
 #define _SPACEBATTLE_H_
 
 #include <cstring>
-#include "rebelfleet.h"
 #include "imperialfleet.h"
+#include "rebelfleet.h"
 
-using T = int;
+using Time = int;
+
+class TimingStrategy {
+public:
+    TimingStrategy() = default;
+    virtual ~TimingStrategy() = default;
+
+    virtual bool shouldAttack(Time t) = 0;
+    virtual void stepTime(Time timeStep) = 0;
+};
+
+class Timing235 : public TimingStrategy {
+protected:
+    Time t0;
+    Time t1;
+    Time currentTime;
+public:
+    Timing235(Time t0, Time t1);
+
+    bool shouldAttack(Time t) override;
+    void stepTime(Time timeStep) override;
+};
 
 class SpaceBattle {
-    T t0;
-    T t1;
-    std::vector<ImperialStarship*> imperial_fleet;
-    int imperial_alive = 0;
-    std::vector<RebelStarship*> rebel_fleet;
-    int rebel_alive = 0;
+protected:
+    std::vector<std::shared_ptr<SingleImperialShip>> imperialShips;
+    std::vector<std::shared_ptr<Squadron>> imperialSquadrons;
+    std::vector<std::shared_ptr<RebelStarship>> rebelShips;
+
+    std::unique_ptr<TimingStrategy> battleTiming;
+
+    virtual void executeAttack(ImperialStarship& imp, RebelStarship& reb);
 
 public:
-    class Builder {
-    public:
-        Builder ship(ImperialStarship* ship);
-        Builder ship(RebelStarship* ship);
-        Builder ship(Squadron* squadron);
-        Builder startTime(T time);
-        Builder maxTime(T max_time);
-        SpaceBattle build();
-    };
-
     SpaceBattle() = default;
-    std::size_t countImperialFleet();
-    std::size_t countRebelFleet();
-    void tick(T timeStep);
+    virtual ~SpaceBattle() = default;
+
+    std::size_t countImperialFleet() const;
+    std::size_t countRebelFleet() const;
+    void tick(Time timeStep);
+
+    class Builder {
+    private:
+        std::vector<std::shared_ptr<SingleImperialShip>> imperialShips;
+        std::vector<std::shared_ptr<Squadron>> imperialSquadrons;
+        std::vector<std::shared_ptr<RebelStarship>> rebelShips;
+        Time t0;
+        Time t1;
+    public:
+        Builder& ship(std::shared_ptr<SingleImperialShip> ship);
+        Builder& ship(std::shared_ptr<Squadron> ship);
+        Builder& ship(std::shared_ptr<RebelStarship> ship);
+        Builder& startTime(Time time);
+        Builder& maxTime(Time time);
+        SpaceBattle& build();
+    };
 };
 
 #endif //_SPACEBATTLE_H_

@@ -5,7 +5,7 @@
 // LimitedSpeedVehicle
 
 void LimitedSpeedVehicle::checkSpeed(Speed min, Speed max) {
-     assert(speed >= static_cast<Speed>(min) && speed <= static_cast<Speed>(max));
+    assert(speed >= static_cast<Speed>(min) && speed <= static_cast<Speed>(max));
 }
 
 LimitedSpeedVehicle::LimitedSpeedVehicle(Speed min, Speed max, Speed speed) : speed(speed) {
@@ -33,9 +33,9 @@ std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield_points, Speed 
 // StarCruiser
 // todo - same as above with 'Attacker'
 StarCruiser::StarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power) :
-    Starship(shield_points),
-    Attacker(shield_points, attack_power),
-    RebelStarship(shield_points, 99999, 299795, speed) {}
+        Starship(shield_points),
+        Attacker(shield_points, attack_power),
+        RebelStarship(shield_points, 99999, 299795, speed) {}
 
 std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power) {
     return std::make_shared<StarCruiser>(StarCruiser(shield_points, speed, attack_power));
@@ -43,9 +43,9 @@ std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield_points, Spe
 
 // XWing
 XWing::XWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power) :
-    Starship(shield_points),
-    Attacker(shield_points, attack_power),
-    RebelStarship(shield_points, 299796, 2997960, speed) {}
+        Starship(shield_points),
+        Attacker(shield_points, attack_power),
+        RebelStarship(shield_points, 299796, 2997960, speed) {}
 
 std::shared_ptr<RebelStarship> createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power) {
     return std::make_shared<XWing>(XWing(shield_points, speed, attack_power));
