@@ -3,6 +3,8 @@
 
 #include <cassert>
 #include <type_traits>
+#include <memory>
+#include "imperialfleet.h"
 
 using Speed = int;
 using ShieldPoints = int;
@@ -26,6 +28,8 @@ public:
     void takeDamage(AttackPower damage);
     bool isAlive() const;
 
+    virtual void attackBackIfAble(ImperialStarship& imp);
+
     virtual ~RebelStarship() = default;
 };
 
@@ -34,6 +38,7 @@ class Attacker : public RebelStarship {
 public:
     AttackPower getAttackPower() const;
     Attacker(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
+    void attackBackIfAble(ImperialStarship& imp) override;
     virtual ~Attacker() = default;
 };
 
@@ -47,7 +52,7 @@ public:
     Explorer(ShieldPoints, Speed);
 };
 
-Explorer* createExplorer(ShieldPoints shield_points, Speed speed);
+std::shared_ptr<Explorer> createExplorer(ShieldPoints shield_points, Speed speed);
 
 class StarCruiser : public Attacker {
 protected:
@@ -59,8 +64,7 @@ public:
     StarCruiser(ShieldPoints, Speed, AttackPower);
 };
 
-StarCruiser* createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
-
+std::shared_ptr<StarCruiser> createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
 
 class XWing : public Attacker {
 protected:
@@ -72,6 +76,6 @@ public:
     XWing(ShieldPoints, Speed, AttackPower);
 };
 
-XWing* createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
+std::shared_ptr<XWing> createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
 
 #endif // _REBELFLEET_H_

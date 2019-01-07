@@ -1,12 +1,15 @@
 #include "battle.h"
 #include <iostream>
+#include <memory>
 
-SpaceBattle::Builder &SpaceBattle::Builder::ship(RebelStarship *ship) {
+//SpaceBattle
+
+SpaceBattle::Builder &SpaceBattle::Builder::ship(std::shared_ptr<RebelStarship> ship) {
     rebelShips.push_back(ship);
     return *this;
 }
 
-SpaceBattle::Builder &SpaceBattle::Builder::ship(ImperialStarship *ship) {
+SpaceBattle::Builder &SpaceBattle::Builder::ship(std::shared_ptr<ImperialStarship> ship) {
     imperialShips.push_back(ship);
     return *this;
 }
@@ -21,12 +24,11 @@ SpaceBattle::Builder &SpaceBattle::Builder::startTime(Time time) {
     return *this;
 }
 
-SpaceBattle &SpaceBattle::Builder::build() {
+SpaceBattle& SpaceBattle::Builder::build() {
     SpaceBattle battle;
     battle.imperialShips = imperialShips;
     battle.rebelShips = rebelShips;
-    battle.t0 = battle.currentTime = t0;
-    battle.t1 = t1;
+    battle.battleTiming = std::make_unique<Timing235>(t0, t1);
     return battle;
 }
 
@@ -48,7 +50,7 @@ std::size_t SpaceBattle::countRebelFleet() const {
     return count;
 }
 
-void SpaceBattle::tick(T timeStep) {
+void SpaceBattle::tick(Time timeStep) {
     int rebCount = countRebelFleet();
     int impCount = countImperialFleet();
 
@@ -64,32 +66,28 @@ void SpaceBattle::tick(T timeStep) {
         return;
     }
 
-    if (getTimingSTrategy().shouldAttack(timeStep)) {
+    if (battleTiming->shouldAttack(timeStep)) {
         for (auto imp : imperialShips) {
             for (auto reb : rebelShips) {
                 if (imp->isAlive() && reb->isAlive()) {
-                    executeAttack(imp, reb);
+                    executeAttack(*imp, *reb);
                 }
             }
         }
     }
 
-    currentTime += timeStep;
-    if (currentTime > t1) {
-        currentTime = t0 + (currentTime % t1);
-    }
+    battleTiming->stepTime(timeStep);
 }
 
-void SpaceBattle::executeAttack(ImperialStarship *imp, RebelStarship *reb) {
-    reb->takeDamage(imp->getAttackPower());
-    if (Attacker *v = dynamic_cast<Attacker *>(reb)) {
-        imp->takeDamage(v->getAttackPower());
-    }
+void SpaceBattle::executeAttack(ImperialStarship &imp, RebelStarship &reb) {
+    reb.takeDamage(imp.getAttackPower());
+    reb.attackBackIfAble(imp);
 }
 
-TimingStrategy &SpaceBattle::getTimingSTrategy() {
-    static Timing235 timing;
-    return timing;
+//Timing235
+Timing235::Timing235(Time _t0, Time _t1) {
+    t0 = _t0;
+    t1 = _t1;
 }
 
 bool Timing235::shouldAttack(Time t) {
@@ -100,4 +98,11 @@ bool Timing235::shouldAttack(Time t) {
         return true;
     }
     return false;
+}
+
+void Timing235::stepTime(Time timeStep) {
+    currentTime += timeStep;
+    if (currentTime > t1) {
+        currentTime = t0 + (currentTime % t1);
+    }
 }
