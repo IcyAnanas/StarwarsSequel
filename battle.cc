@@ -94,8 +94,7 @@ void SpaceBattle::tick(Time timeStep) {
 
 void SpaceBattle::executeAttack(ImperialStarship &imp, RebelStarship &reb) {
     reb.takeDamage(imp.getAttackPower());
-//    reb.attackBackIfAble(imp);
-//help how to do this without adding stuff to RebelStarship and without casting
+    reb.attackBackIfAble(imp);
 }
 
 //Timing235

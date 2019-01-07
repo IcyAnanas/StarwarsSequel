@@ -25,7 +25,16 @@ class RebelStarship : virtual public Starship, public LimitedSpeedVehicle {
 public:
     RebelStarship(ShieldPoints shield_points, Speed speed, Speed min, Speed max);
 
+    virtual void attackBackIfAble(ImperialStarship& imp);
+
     virtual ~RebelStarship() = default;
+};
+
+class RebelAttacker : public RebelStarship, public Attacker {
+public:
+    RebelAttacker(ShieldPoints, Speed speed, Speed min, Speed max, AttackPower);
+
+    void attackBackIfAble(ImperialStarship& imp) override;
 };
 
 class Explorer : public RebelStarship {
@@ -35,7 +44,7 @@ public:
 
 std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield_points, Speed speed);
 
-class StarCruiser : public Attacker, public RebelStarship {
+class StarCruiser : public RebelAttacker {
 public:
     StarCruiser(ShieldPoints, Speed, AttackPower);
 };
@@ -43,7 +52,7 @@ public:
 std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
 
 
-class XWing : public Attacker, public RebelStarship {
+class XWing : public RebelAttacker {
 
 public:
     XWing(ShieldPoints, Speed, AttackPower);
