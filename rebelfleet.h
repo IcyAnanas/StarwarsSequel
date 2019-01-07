@@ -3,75 +3,52 @@
 
 #include <cassert>
 #include <type_traits>
+#include <memory>
+#include "helper.h"
 
 using Speed = int;
-using ShieldPoints = int;
-using AttackPower = int;
 
-// todo - ctors with const references, move maybe?
-// todo - no templates?
-
-class RebelStarship {
+class LimitedSpeedVehicle {
+private:
+    void checkSpeed(Speed min, Speed max);
 protected:
     const Speed speed;
-    ShieldPoints shield_points;
-    virtual void checkSpeed();
-
+    LimitedSpeedVehicle(Speed min, Speed max, Speed speed);
+    virtual ~LimitedSpeedVehicle() = default;
 public:
-    RebelStarship(ShieldPoints shield_points, Speed speed);
-
-    ShieldPoints getShield() const;
     Speed getSpeed() const;
+};
+
+// todo - public, private inheritance??
+class RebelStarship : virtual public Starship, public LimitedSpeedVehicle {
+public:
+    RebelStarship(ShieldPoints shield_points, Speed speed, Speed min, Speed max);
 
     void takeDamage(AttackPower damage);
-    bool isAlive() const;
-
     virtual ~RebelStarship() = default;
 };
 
-class Attacker : public RebelStarship {
-    AttackPower attack_power;
-public:
-    AttackPower getAttackPower() const;
-    Attacker(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
-    virtual ~Attacker() = default;
-};
-
 class Explorer : public RebelStarship {
-protected:
-    void checkSpeed() override {
-        assert(speed >= static_cast<Speed>(299796)&& speed <= static_cast<Speed>(2997960) &&
-               "Given speed doesn't satisfy requirements");
-    }
 public:
     Explorer(ShieldPoints, Speed);
 };
 
-Explorer* createExplorer(ShieldPoints shield_points, Speed speed);
+std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield_points, Speed speed);
 
-class StarCruiser : public Attacker {
-protected:
-    void checkSpeed() override {
-        assert(speed >= static_cast<Speed>(99999)&& speed <= static_cast<Speed>(299795) &&
-               "Given speed doesn't satisfy requirements");
-    }
+class StarCruiser : public Attacker, public RebelStarship {
 public:
     StarCruiser(ShieldPoints, Speed, AttackPower);
 };
 
-StarCruiser* createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
+std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
 
 
-class XWing : public Attacker {
-protected:
-    void checkSpeed() override {
-        assert(speed >= static_cast<Speed>(299796)&& speed <= static_cast<Speed>(2997960) &&
-               "Given speed doesn't satisfy requirements");
-    }
+class XWing : public Attacker, public RebelStarship {
+
 public:
     XWing(ShieldPoints, Speed, AttackPower);
 };
 
-XWing* createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
+std::shared_ptr<RebelStarship> createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
 
 #endif // _REBELFLEET_H_

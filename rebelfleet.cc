@@ -1,14 +1,24 @@
 #include "rebelfleet.h"
 #include <cassert>
+#include<iostream>
 
-// RebelStarship
-RebelStarship::RebelStarship(
-        ShieldPoints shield_points, Speed speed) : speed(speed), shield_points(shield_points) {
+// LimitedSpeedVehicle
+
+void LimitedSpeedVehicle::checkSpeed(Speed min, Speed max) {
+     assert(speed >= static_cast<Speed>(min) && speed <= static_cast<Speed>(max));
 }
 
-ShieldPoints RebelStarship::getShield() const {return shield_points;}
+LimitedSpeedVehicle::LimitedSpeedVehicle(Speed min, Speed max, Speed speed) : speed(speed) {
+    checkSpeed(min, max);
+}
 
-Speed RebelStarship::getSpeed() const {return speed;}
+Speed LimitedSpeedVehicle::getSpeed() const {
+    return speed;
+}
+
+// RebelStarship
+RebelStarship::RebelStarship(ShieldPoints shield_points, Speed min, Speed max, Speed speed) :
+        Starship(shield_points), LimitedSpeedVehicle(min, max, speed) {}
 
 void RebelStarship::takeDamage(AttackPower damage) {
     if(shield_points <= damage) {
@@ -19,49 +29,33 @@ void RebelStarship::takeDamage(AttackPower damage) {
     }
 }
 
-bool RebelStarship::isAlive() const {
-    return shield_points > 0;
-}
-
-void RebelStarship::checkSpeed() {}
-
-// Attacker
-Attacker::Attacker(
-        ShieldPoints shield_points, Speed speed, AttackPower attack_power) :
-        RebelStarship(shield_points, speed),
-        attack_power(attack_power) {}
-
-AttackPower Attacker::getAttackPower() const {return attack_power;}
-
-
 // Explorer
+// todo - 'class Explorer must explicitly initialize Starship which has no default ctor'
 Explorer::Explorer(ShieldPoints shield_points, Speed speed) :
-        RebelStarship(shield_points, speed) {
-    checkSpeed();
-}
+        Starship(shield_points),
+        RebelStarship(shield_points, 299796, 2997960, speed) {}
 
-Explorer* createExplorer(ShieldPoints shield_points, Speed speed) {
-    return new Explorer{shield_points, speed};
+std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield_points, Speed speed) {
+    return std::make_shared<Explorer>(Explorer(shield_points, speed));
 }
 
 // StarCruiser
-StarCruiser::StarCruiser(
-        ShieldPoints shield_points, Speed speed, AttackPower attack_power) :
-        Attacker(shield_points, speed, attack_power) {
-    checkSpeed();
-}
+// todo - same as above with 'Attacker'
+StarCruiser::StarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power) :
+    Starship(shield_points),
+    Attacker(shield_points, attack_power),
+    RebelStarship(shield_points, 99999, 299795, speed) {}
 
-StarCruiser* createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power) {
-    return new StarCruiser{shield_points, speed, attack_power};
+std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power) {
+    return std::make_shared<StarCruiser>(StarCruiser(shield_points, speed, attack_power));
 }
 
 // XWing
 XWing::XWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power) :
-        Attacker::Attacker(shield_points, speed, attack_power) {
-    checkSpeed();
-}
+    Starship(shield_points),
+    Attacker(shield_points, attack_power),
+    RebelStarship(shield_points, 299796, 2997960, speed) {}
 
-XWing* createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power) {
-    return new XWing{shield_points, speed, attack_power};
+std::shared_ptr<RebelStarship> createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power) {
+    return std::make_shared<XWing>(XWing(shield_points, speed, attack_power));
 }
-
