@@ -4,7 +4,6 @@
 ImperialStarship::ImperialStarship(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
     Attacker(shield_points, attack_power) {
-    takeDamage(100);
 }
 
 // DeathStar
@@ -77,10 +76,11 @@ const int& Squadron::numberOfAliveShips() const {
 }
 
 // clang suggested to move it instead - we could write a moving function as well, but do we really need to?
-Squadron* createSquadron(const std::vector<ImperialStarship*>& ships) {
-    return new Squadron(ships);
+std::shared_ptr<ImperialStarship> createSquadron(const std::vector<ImperialStarship*>& ships) {
+    return std::make_shared<Squadron>(Squadron(ships));
 }
 
-Squadron* createSquadron(const std::initializer_list<ImperialStarship*>& ships) {
-    return new Squadron(ships);
+// todo - casting initializer_list on a vector - not sure whether it's completely valid
+std::shared_ptr<ImperialStarship> createSquadron(const std::initializer_list<ImperialStarship*>& ships) {
+    return createSquadron(std::vector<ImperialStarship*>(ships));
 }

@@ -8,12 +8,12 @@ class Starship {
 protected:
     ShieldPoints shield_points;
     Starship(ShieldPoints shield_points);
-    virtual void takeDamage(AttackPower damage);
 
 public:
     virtual ShieldPoints  getShield() const;
     virtual ~Starship() = default;
     bool isAlive() const;
+    virtual void takeDamage(AttackPower damage);
 };
 
 class Attacker : virtual public Starship {
