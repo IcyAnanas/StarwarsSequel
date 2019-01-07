@@ -22,6 +22,8 @@ public:
     bool isAlive() const;
 
     virtual ~ImperialStarship() = default;
+
+    virtual const int& numberOfAliveShips() const;
 };
 
 class DeathStar : public ImperialStarship {
@@ -54,7 +56,7 @@ public:
     Squadron(const std::vector<ImperialStarship*>& ships);
     //Squadron(const std::initializer_list<ImperialStarship>& ships);
 
-    const int& numberOfAliveShips() const;
+    const int& numberOfAliveShips() const override;
     void takeDamage(AttackPower damage) override;
 };
 

@@ -25,6 +25,10 @@ bool ImperialStarship::isAlive() const {
     return shield_points > 0;
 }
 
+const int& ImperialStarship::numberOfAliveShips() const {
+    return isAlive();
+}
+
 // DeathStar
 DeathStar::DeathStar(ShieldPoints shield_points, AttackPower attack_power) :
         ImperialStarship(shield_points, attack_power) {}
