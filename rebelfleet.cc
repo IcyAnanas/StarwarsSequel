@@ -20,15 +20,6 @@ Speed LimitedSpeedVehicle::getSpeed() const {
 RebelStarship::RebelStarship(ShieldPoints shield_points, Speed min, Speed max, Speed speed) :
         Starship(shield_points), LimitedSpeedVehicle(min, max, speed) {}
 
-void RebelStarship::takeDamage(AttackPower damage) {
-    if(shield_points <= damage) {
-        shield_points = ShieldPoints{0};
-    }
-    else {
-        shield_points -= damage;
-    }
-}
-
 // Explorer
 // todo - 'class Explorer must explicitly initialize Starship which has no default ctor'
 Explorer::Explorer(ShieldPoints shield_points, Speed speed) :

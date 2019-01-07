@@ -7,7 +7,8 @@ using AttackPower = int;
 class Starship {
 protected:
     ShieldPoints shield_points;
-    Starship(ShieldPoints shield_points);           // todo - explicit?
+    Starship(ShieldPoints shield_points);
+    virtual void takeDamage(AttackPower damage);
 
 public:
     virtual ShieldPoints  getShield() const;

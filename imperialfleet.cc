@@ -2,57 +2,44 @@
 
 // ImperialStarship
 ImperialStarship::ImperialStarship(ShieldPoints shield_points, AttackPower attack_power) :
-        shield_points(shield_points), attack_power(attack_power) {}
-
-ShieldPoints ImperialStarship::getShield() const {
-    return shield_points;
-}
-
-AttackPower ImperialStarship::getAttackPower() const {
-    return attack_power;
-}
-
-void ImperialStarship::takeDamage(AttackPower damage) {
-    if(shield_points <= damage) {
-        shield_points = ShieldPoints{0};
-    }
-    else {
-        shield_points -= damage;
-    }
-}
-
-bool ImperialStarship::isAlive() const {
-    return shield_points > 0;
+    Starship(shield_points),
+    Attacker(shield_points, attack_power) {
+    takeDamage(100);
 }
 
 // DeathStar
 DeathStar::DeathStar(ShieldPoints shield_points, AttackPower attack_power) :
-        ImperialStarship(shield_points, attack_power) {}
+    Starship(shield_points),
+    ImperialStarship(shield_points, attack_power) {}
 
-DeathStar* createDeathStar(ShieldPoints shield_points, AttackPower attack_power) {
-    return new DeathStar{shield_points, attack_power};
+std::shared_ptr<ImperialStarship> createDeathStar(ShieldPoints shield_points, AttackPower attack_power) {
+    return std::make_shared<DeathStar>(DeathStar(shield_points, attack_power));
 }
 
 
 // ImperialDestroyer
 ImperialDestroyer::ImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power) :
-        ImperialStarship(shield_points, attack_power) {}
+    Starship(shield_points),
+    ImperialStarship(shield_points, attack_power) {}
 
-ImperialDestroyer* createImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power) {
-    return new ImperialDestroyer{shield_points, attack_power};
+std::shared_ptr<ImperialStarship> createImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power) {
+    return std::make_shared<ImperialDestroyer>(ImperialDestroyer(shield_points, attack_power));
 }
 
 // TIEFighter
 TIEFighter::TIEFighter(ShieldPoints shield_points, AttackPower attack_power) :
-        ImperialStarship(shield_points, attack_power) {}
+    Starship(shield_points),
+    ImperialStarship(shield_points, attack_power) {}
 
-TIEFighter* createTIEFighter(ShieldPoints shield_points, AttackPower attack_power) {
-    return new TIEFighter{shield_points, attack_power};
+std::shared_ptr<ImperialStarship> createTIEFighter(ShieldPoints shield_points, AttackPower attack_power) {
+    return std::make_shared<TIEFighter>(TIEFighter(shield_points, attack_power));
 }
 
 // Squadron
 // todo - brute or smart? (keeping alive&dead in 2 separates structures === smart)
-Squadron::Squadron(const std::vector<ImperialStarship*>& ships) : ImperialStarship(ShieldPoints{0}, AttackPower{0}), ships(ships) {
+Squadron::Squadron(const std::vector<ImperialStarship*>& ships) :
+Starship(shield_points),
+ImperialStarship(ShieldPoints{0}, AttackPower{0}), ships(ships) {
     for (const auto ship : ships) {
         if(ship->isAlive()) {
             ++alive;

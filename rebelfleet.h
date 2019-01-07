@@ -24,7 +24,6 @@ class RebelStarship : virtual public Starship, public LimitedSpeedVehicle {
 public:
     RebelStarship(ShieldPoints shield_points, Speed speed, Speed min, Speed max);
 
-    void takeDamage(AttackPower damage);
     virtual ~RebelStarship() = default;
 };
 
