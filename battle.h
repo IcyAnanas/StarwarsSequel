@@ -24,15 +24,15 @@ protected:
     Time t1;
     Time currentTime;
 
-    std::vector<ImperialStarship> imperialShips;
-    std::vector<RebelStarship> rebelShips;
+    std::vector<ImperialStarship*> imperialShips;
+    std::vector<RebelStarship*> rebelShips;
 
     virtual TimingStrategy& getTimingSTrategy();
 
-    virtual void executeAttack(ImperialStarship& imp, RebelStarship& reb);
+    virtual void executeAttack(ImperialStarship* imp, RebelStarship* reb);
 
 public:
-    SpaceBattle() = default;
+//    SpaceBattle() = default;
 
     std::size_t countImperialFleet() const;
     std::size_t countRebelFleet() const;
@@ -40,14 +40,14 @@ public:
 
     class Builder {
     private:
-        std::vector<ImperialStarship> imperialShips;
-        std::vector<RebelStarship> rebelShips;
+        std::vector<ImperialStarship*> imperialShips;
+        std::vector<RebelStarship*> rebelShips;
 
         Time t0;
         Time t1;
     public:
-        Builder& ship(ImperialStarship ship);
-        Builder& ship(RebelStarship ship);
+        Builder& ship(ImperialStarship* ship);
+        Builder& ship(RebelStarship* ship);
         Builder& startTime(Time time);
         Builder& maxTime(Time time);
         SpaceBattle& build();
