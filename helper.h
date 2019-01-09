@@ -1,6 +1,8 @@
 #ifndef _HELPER_H_
 #define _HELPER_H_
 
+#include <cstring>
+
 using ShieldPoints = int;
 using AttackPower = int;
 
@@ -10,10 +12,11 @@ protected:
     Starship(ShieldPoints shield_points);
 
 public:
-    virtual ShieldPoints  getShield() const;
+    virtual ShieldPoints getShield() const;
     virtual ~Starship() = default;
     bool isAlive() const;
-    virtual void takeDamage(AttackPower damage);
+    virtual void takeDamage(AttackPower damage) = 0;
+    virtual int countAliveShips() const = 0;
 };
 
 class Attacker : virtual public Starship {
@@ -23,6 +26,15 @@ protected:
 public:
     AttackPower getAttackPower() const;
     virtual ~Attacker() = default;
+};
+
+class SingleStarship : virtual public Starship {
+protected:
+    SingleStarship(ShieldPoints shield_points);
+public:
+    void takeDamage(AttackPower damage) override;
+    int countAliveShips() const override;
+    virtual ~SingleStarship() = default;
 };
 
 

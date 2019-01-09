@@ -19,13 +19,17 @@ public:
     Speed getSpeed() const;
 };
 
+
+
 // todo - public, private inheritance??
-class RebelStarship : virtual public Starship, public LimitedSpeedVehicle {
+class RebelStarship : public SingleStarship, public LimitedSpeedVehicle {
 public:
     RebelStarship(ShieldPoints shield_points, Speed speed, Speed min, Speed max);
 
     virtual ~RebelStarship() = default;
 };
+
+
 
 class Explorer : public RebelStarship {
 public:
@@ -33,6 +37,8 @@ public:
 };
 
 std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield_points, Speed speed);
+
+
 
 class StarCruiser : public Attacker, public RebelStarship {
 public:
@@ -42,8 +48,8 @@ public:
 std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
 
 
-class XWing : public Attacker, public RebelStarship {
 
+class XWing : public Attacker, public RebelStarship {
 public:
     XWing(ShieldPoints, Speed, AttackPower);
 };

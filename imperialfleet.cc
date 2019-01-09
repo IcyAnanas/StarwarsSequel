@@ -1,3 +1,4 @@
+#include <iostream>
 #include "imperialfleet.h"
 
 // ImperialStarship
@@ -9,6 +10,7 @@ ImperialStarship::ImperialStarship(ShieldPoints shield_points, AttackPower attac
 // DeathStar
 DeathStar::DeathStar(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
+    SingleStarship(shield_points),
     ImperialStarship(shield_points, attack_power) {}
 
 std::shared_ptr<ImperialStarship> createDeathStar(ShieldPoints shield_points, AttackPower attack_power) {
@@ -19,6 +21,7 @@ std::shared_ptr<ImperialStarship> createDeathStar(ShieldPoints shield_points, At
 // ImperialDestroyer
 ImperialDestroyer::ImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
+    SingleStarship(shield_points),
     ImperialStarship(shield_points, attack_power) {}
 
 std::shared_ptr<ImperialStarship> createImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power) {
@@ -28,6 +31,7 @@ std::shared_ptr<ImperialStarship> createImperialDestroyer(ShieldPoints shield_po
 // TIEFighter
 TIEFighter::TIEFighter(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
+    SingleStarship(shield_points),
     ImperialStarship(shield_points, attack_power) {}
 
 std::shared_ptr<ImperialStarship> createTIEFighter(ShieldPoints shield_points, AttackPower attack_power) {
@@ -36,16 +40,20 @@ std::shared_ptr<ImperialStarship> createTIEFighter(ShieldPoints shield_points, A
 
 // Squadron
 // todo - brute or smart? (keeping alive&dead in 2 separates structures === smart)
-Squadron::Squadron(const std::vector<ImperialStarship*>& ships) :
-Starship(shield_points),
+Squadron::Squadron(const std::vector<std::shared_ptr<ImperialStarship>>& ships) :
+Starship(ShieldPoints{0}),
 ImperialStarship(ShieldPoints{0}, AttackPower{0}), ships(ships) {
-    for (const auto ship : ships) {
+    for (const auto& ship : ships) {
         if(ship->isAlive()) {
-            ++alive;
+            alive += ship->countAliveShips();
             shield_points += ship->getShield();
             attack_power += ship->getAttackPower();
         }
     }
+}
+
+int Squadron::countAliveShips() const {
+    return alive;
 }
 
 // todo
@@ -56,31 +64,31 @@ ImperialStarship(ShieldPoints{0}, AttackPower{0}), ships(ships) {
 //    Squadron(std::vector<ImperialStarship*>(ships)) {}
 
 void Squadron::takeDamage(AttackPower damage) {
-    for(auto ship : ships) {
+    for(auto& ship : ships) {
         if(ship->isAlive()) {
-            if(ship->getShield() <= static_cast<ShieldPoints>(damage)) {
-                shield_points -= ship->getShield();
-                attack_power -= ship->getAttackPower();
-                --alive;
-            }
-            else {
-                shield_points -= damage;
-            }
+            int killed = ship->countAliveShips();
+            ShieldPoints shield_decrease = ship->getShield();
+            AttackPower attack_power_decrease = ship->getAttackPower();
+
             ship->takeDamage(damage);
+
+            killed -= ship->countAliveShips();
+            shield_decrease -= ship->getShield();
+            if(ship->isAlive()) attack_power_decrease -= ship->getAttackPower();
+
+            alive -= killed;
+            shield_points -= shield_decrease;
+            attack_power -= attack_power_decrease;
         }
     }
 }
 
-const int& Squadron::numberOfAliveShips() const {
-    return alive;
-}
-
 // clang suggested to move it instead - we could write a moving function as well, but do we really need to?
-std::shared_ptr<ImperialStarship> createSquadron(const std::vector<ImperialStarship*>& ships) {
+std::shared_ptr<ImperialStarship> createSquadron(const std::vector<std::shared_ptr<ImperialStarship>>& ships) {
     return std::make_shared<Squadron>(Squadron(ships));
 }
 
 // todo - casting initializer_list on a vector - not sure whether it's completely valid
-std::shared_ptr<ImperialStarship> createSquadron(const std::initializer_list<ImperialStarship*>& ships) {
-    return createSquadron(std::vector<ImperialStarship*>(ships));
+std::shared_ptr<ImperialStarship> createSquadron(const std::initializer_list<std::shared_ptr<ImperialStarship>>& ships) {
+    return createSquadron(std::vector<std::shared_ptr<ImperialStarship>>(ships));
 }
