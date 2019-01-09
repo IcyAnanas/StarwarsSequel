@@ -15,7 +15,6 @@ public:
 };
 
 
-
 class DeathStar : public ImperialStarship, public SingleStarship {
 public:
     DeathStar(ShieldPoints shield_points, AttackPower attack_power);
@@ -31,7 +30,6 @@ public:
 };
 
 std::shared_ptr<ImperialStarship> createImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power);
-
 
 
 class TIEFighter : public ImperialStarship, public SingleStarship {

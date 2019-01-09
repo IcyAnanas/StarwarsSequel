@@ -43,7 +43,7 @@ std::shared_ptr<ImperialStarship> createTIEFighter(ShieldPoints shield_points, A
 Squadron::Squadron(const std::vector<std::shared_ptr<ImperialStarship>>& ships) :
 Starship(ShieldPoints{0}),
 ImperialStarship(ShieldPoints{0}, AttackPower{0}), ships(ships) {
-    for (const auto& ship : ships) {
+    for (const auto ship : ships) {
         if(ship->isAlive()) {
             alive += ship->countAliveShips();
             shield_points += ship->getShield();
@@ -88,7 +88,7 @@ std::shared_ptr<ImperialStarship> createSquadron(const std::vector<std::shared_p
     return std::make_shared<Squadron>(Squadron(ships));
 }
 
-// todo - casting initializer_list on a vector - not sure whether it's completely valid
-std::shared_ptr<ImperialStarship> createSquadron(const std::initializer_list<std::shared_ptr<ImperialStarship>>& ships) {
-    return createSquadron(std::vector<std::shared_ptr<ImperialStarship>>(ships));
-}
+//// todo - casting initializer_list on a vector - not sure whether it's completely valid
+//std::shared_ptr<ImperialStarship> createSquadron(const std::initializer_list<ImperialStarship*>& ships) {
+//    return createSquadron(std::vector<ImperialStarship*>(ships));
+//}
