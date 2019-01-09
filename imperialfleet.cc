@@ -7,11 +7,17 @@ ImperialStarship::ImperialStarship(ShieldPoints shield_points, AttackPower attac
     Attacker(shield_points, attack_power) {
 }
 
+// SingleImperialStarship
+SingleImperialStarship::SingleImperialStarship(ShieldPoints shield_points, AttackPower attack_power) :
+    Starship(shield_points),
+    SingleStarship(shield_points),
+    ImperialStarship(shield_points, attack_power) {
+}
+
 // DeathStar
 DeathStar::DeathStar(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
-    SingleStarship(shield_points),
-    ImperialStarship(shield_points, attack_power) {}
+    SingleImperialStarship(shield_points, attack_power) {}
 
 std::shared_ptr<ImperialStarship> createDeathStar(ShieldPoints shield_points, AttackPower attack_power) {
     return std::make_shared<DeathStar>(DeathStar(shield_points, attack_power));
@@ -21,8 +27,7 @@ std::shared_ptr<ImperialStarship> createDeathStar(ShieldPoints shield_points, At
 // ImperialDestroyer
 ImperialDestroyer::ImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
-    SingleStarship(shield_points),
-    ImperialStarship(shield_points, attack_power) {}
+    SingleImperialStarship(shield_points, attack_power) {}
 
 std::shared_ptr<ImperialStarship> createImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power) {
     return std::make_shared<ImperialDestroyer>(ImperialDestroyer(shield_points, attack_power));
@@ -31,8 +36,7 @@ std::shared_ptr<ImperialStarship> createImperialDestroyer(ShieldPoints shield_po
 // TIEFighter
 TIEFighter::TIEFighter(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
-    SingleStarship(shield_points),
-    ImperialStarship(shield_points, attack_power) {}
+    SingleImperialStarship(shield_points, attack_power) {}
 
 std::shared_ptr<ImperialStarship> createTIEFighter(ShieldPoints shield_points, AttackPower attack_power) {
     return std::make_shared<TIEFighter>(TIEFighter(shield_points, attack_power));
@@ -43,7 +47,7 @@ std::shared_ptr<ImperialStarship> createTIEFighter(ShieldPoints shield_points, A
 Squadron::Squadron(const std::vector<std::shared_ptr<ImperialStarship>>& ships) :
 Starship(ShieldPoints{0}),
 ImperialStarship(ShieldPoints{0}, AttackPower{0}), ships(ships) {
-    for (const auto ship : ships) {
+    for (const auto& ship : ships) {
         if(ship->isAlive()) {
             alive += ship->countAliveShips();
             shield_points += ship->getShield();

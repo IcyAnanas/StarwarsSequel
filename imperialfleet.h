@@ -14,8 +14,15 @@ public:
     virtual ~ImperialStarship() = default;
 };
 
+class SingleImperialStarship : public ImperialStarship, public SingleStarship {
+public:
+    SingleImperialStarship(ShieldPoints shield_points, AttackPower attack_power);
 
-class DeathStar : public ImperialStarship, public SingleStarship {
+    virtual ~SingleImperialStarship() = default;
+};
+
+
+class DeathStar : public SingleImperialStarship {
 public:
     DeathStar(ShieldPoints shield_points, AttackPower attack_power);
 };
@@ -24,7 +31,7 @@ std::shared_ptr<ImperialStarship> createDeathStar(ShieldPoints shield_points, At
 
 
 
-class ImperialDestroyer : public ImperialStarship, public SingleStarship {
+class ImperialDestroyer : public SingleImperialStarship {
 public:
     ImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power);
 };
@@ -32,7 +39,7 @@ public:
 std::shared_ptr<ImperialStarship> createImperialDestroyer(ShieldPoints shield_points, AttackPower attack_power);
 
 
-class TIEFighter : public ImperialStarship, public SingleStarship {
+class TIEFighter : public SingleImperialStarship {
 public:
     TIEFighter(ShieldPoints shield_points, AttackPower attack_power);
 };

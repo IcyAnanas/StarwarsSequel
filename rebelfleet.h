@@ -5,6 +5,7 @@
 #include <type_traits>
 #include <memory>
 #include "helper.h"
+#include "imperialfleet.h"
 
 using Speed = int;
 
@@ -31,6 +32,15 @@ public:
     virtual ~RebelStarship() = default;
 };
 
+class RebelAttacker : public RebelStarship, public Attacker {
+public:
+    RebelAttacker(ShieldPoints shield_points, Speed min, Speed max, Speed speed, AttackPower attack_power);
+
+    void attackBackIfAble(ImperialStarship& imp) override;
+
+    virtual ~RebelAttacker() = default;
+};
+
 class Explorer : public RebelStarship {
 public:
     Explorer(ShieldPoints, Speed);
@@ -39,7 +49,7 @@ public:
 std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield_points, Speed speed);
 
 
-class StarCruiser : public Attacker, public RebelStarship {
+class StarCruiser : public RebelAttacker {
 public:
     StarCruiser(ShieldPoints, Speed, AttackPower);
 };
@@ -47,7 +57,7 @@ public:
 std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power);
 
 
-class XWing : public Attacker, public RebelStarship {
+class XWing : public RebelAttacker {
 public:
     XWing(ShieldPoints, Speed, AttackPower);
 };

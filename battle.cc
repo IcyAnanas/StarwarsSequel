@@ -4,68 +4,56 @@
 
 //SpaceBattle
 
-SpaceBattle::Builder &SpaceBattle::Builder::ship(std::shared_ptr<RebelStarship> ship) {
-    rebelShips.push_back(ship);
+SpaceBattle::Builder& SpaceBattle::Builder::ship(std::shared_ptr<RebelStarship> ship) {
+    rebel_ships.push_back(ship);
     return *this;
 }
 
-SpaceBattle::Builder &SpaceBattle::Builder::ship(std::shared_ptr<SingleImperialShip> ship) {
-    imperialShips.push_back(ship);
+SpaceBattle::Builder& SpaceBattle::Builder::ship(std::shared_ptr<ImperialStarship> ship) {
+    imperial_ships.push_back(ship);
     return *this;
 }
 
-SpaceBattle::Builder &SpaceBattle::Builder::ship(std::shared_ptr<Squadron> ship) {
-    imperialSquadrons.push_back(ship);
-    return *this;
-}
 
-SpaceBattle::Builder &SpaceBattle::Builder::maxTime(Time time) {
+
+SpaceBattle::Builder& SpaceBattle::Builder::maxTime(Time time) {
     t1 = time;
     return *this;
 }
 
-SpaceBattle::Builder &SpaceBattle::Builder::startTime(Time time) {
+SpaceBattle::Builder& SpaceBattle::Builder::startTime(Time time) {
     t0 = time;
     return *this;
 }
 
 SpaceBattle& SpaceBattle::Builder::build() {
     SpaceBattle battle;
-    battle.imperialShips = imperialShips;
-    battle.imperialSquadrons = imperialSquadrons;
-    battle.rebelShips = rebelShips;
+    battle.imperial_ships = imperial_ships;
+    battle.rebel_ships = rebel_ships;
     battle.battleTiming = std::make_unique<Timing235>(t0, t1);
     return battle;
 }
 
 std::size_t SpaceBattle::countImperialFleet() const {
-    std::size_t count;
-    for (auto &imp : imperialShips) {
-        if (imp->isAlive()) {
-            ++count;
-        }
+    std::size_t count = 0;
+    for (auto &imp : imperial_ships) {
+        count += imp->countAliveShips();
     }
-    for (auto &imp : imperialSquadrons) {
-        if (imp->isAlive()) {
-            count += imp->numberOfAliveShips();
-        }
-    }
+
     return count;
 }
 
 std::size_t SpaceBattle::countRebelFleet() const {
-    std::size_t count;
-    for (auto &reb : rebelShips) {
-        if (reb->isAlive()) {
-            ++count;
-        }
+    std::size_t count = 0;
+    for (auto &reb : rebel_ships) {
+           count += reb->countAliveShips();
     }
     return count;
 }
 
 void SpaceBattle::tick(Time timeStep) {
-    int rebCount = countRebelFleet();
-    int impCount = countImperialFleet();
+    std::size_t rebCount = countRebelFleet();
+    std::size_t impCount = countImperialFleet();
 
     if (rebCount == 0 || impCount == 0) {
         if (rebCount == 0 && impCount == 0) {
@@ -80,8 +68,8 @@ void SpaceBattle::tick(Time timeStep) {
     }
 
     if (battleTiming->shouldAttack(timeStep)) {
-        for (auto imp : imperialShips) {
-            for (auto reb : rebelShips) {
+        for (const auto& imp : imperial_ships) {
+            for (const auto& reb : rebel_ships) {
                 if (imp->isAlive() && reb->isAlive()) {
                     executeAttack(*imp, *reb);
                 }

@@ -30,9 +30,8 @@ public:
 
 class SpaceBattle {
 protected:
-    std::vector<std::shared_ptr<SingleImperialShip>> imperialShips;
-    std::vector<std::shared_ptr<Squadron>> imperialSquadrons;
-    std::vector<std::shared_ptr<RebelStarship>> rebelShips;
+    std::vector<std::shared_ptr<ImperialStarship>> imperial_ships;
+    std::vector<std::shared_ptr<RebelStarship>> rebel_ships;
 
     std::unique_ptr<TimingStrategy> battleTiming;
 
@@ -48,14 +47,12 @@ public:
 
     class Builder {
     private:
-        std::vector<std::shared_ptr<SingleImperialShip>> imperialShips;
-        std::vector<std::shared_ptr<Squadron>> imperialSquadrons;
-        std::vector<std::shared_ptr<RebelStarship>> rebelShips;
+        std::vector<std::shared_ptr<ImperialStarship>> imperial_ships;
+        std::vector<std::shared_ptr<RebelStarship>> rebel_ships;
         Time t0;
         Time t1;
     public:
-        Builder& ship(std::shared_ptr<SingleImperialShip> ship);
-        Builder& ship(std::shared_ptr<Squadron> ship);
+        Builder& ship(std::shared_ptr<ImperialStarship> ship);
         Builder& ship(std::shared_ptr<RebelStarship> ship);
         Builder& startTime(Time time);
         Builder& maxTime(Time time);

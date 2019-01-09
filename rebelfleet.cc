@@ -26,12 +26,10 @@ void RebelStarship::attackBackIfAble(ImperialStarship &) {
 }
 
 //Rebel Attacker
-
-RebelAttacker::RebelAttacker(ShieldPoints, Speed speed, Speed min, Speed max, AttackPower):
-        RebelStarship(shield_points, speed, min, max),
+RebelAttacker::RebelAttacker(ShieldPoints shield_points, Speed min, Speed max, Speed speed, AttackPower attack_power):
+        RebelStarship(shield_points, min, max, speed),
         Attacker(shield_points, attack_power),
-        Starship(shield_points) {
-}
+        Starship(shield_points) {}
 
 void RebelAttacker::attackBackIfAble(ImperialStarship &imp) {
     imp.takeDamage(getAttackPower());
@@ -49,7 +47,7 @@ std::shared_ptr<RebelStarship> createExplorer(ShieldPoints shield_points, Speed 
 // StarCruiser
 StarCruiser::StarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power) :
         Starship(shield_points),
-        RebelAttacker(shield_points, speed, 99999, 299795, attack_power) {}
+        RebelAttacker(shield_points, 99999, 299795, speed, attack_power) {}
 
 std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield_points, Speed speed, AttackPower attack_power) {
     return std::make_shared<StarCruiser>(StarCruiser(shield_points, speed, attack_power));
@@ -58,7 +56,7 @@ std::shared_ptr<RebelStarship> createStarCruiser(ShieldPoints shield_points, Spe
 // XWing
 XWing::XWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power) :
         Starship(shield_points),
-        RebelAttacker(shield_points, speed, 299796, 2997960, attack_power) {}
+        RebelAttacker(shield_points, 299796, 2997960, speed, attack_power) {}
 
 std::shared_ptr<RebelStarship> createXWing(ShieldPoints shield_points, Speed speed, AttackPower attack_power) {
     return std::make_shared<XWing>(XWing(shield_points, speed, attack_power));
