@@ -3,6 +3,13 @@
 #include <memory>
 
 //SpaceBattle
+SpaceBattle::SpaceBattle(std::vector<std::shared_ptr<ImperialStarship>>&& imperial_ships,
+                         std::vector<std::shared_ptr<RebelStarship>>&& rebel_ships,
+                         Time t0, Time t1) :
+                         imperial_ships(std::move(imperial_ships)),
+                         rebel_ships(std::move(rebel_ships)) {
+    battleTiming = std::make_unique<Timing235>(t0, t1);
+}
 
 SpaceBattle::Builder& SpaceBattle::Builder::ship(std::shared_ptr<RebelStarship> ship) {
     rebel_ships.push_back(ship);
@@ -26,12 +33,8 @@ SpaceBattle::Builder& SpaceBattle::Builder::startTime(Time time) {
     return *this;
 }
 
-SpaceBattle& SpaceBattle::Builder::build() {
-    SpaceBattle battle;
-    battle.imperial_ships = imperial_ships;
-    battle.rebel_ships = rebel_ships;
-    battle.battleTiming = std::make_unique<Timing235>(t0, t1);
-    return battle;
+SpaceBattle SpaceBattle::Builder::build() {
+    return SpaceBattle(std::move(imperial_ships), std::move(rebel_ships), t0, t1);
 }
 
 std::size_t SpaceBattle::countImperialFleet() const {

@@ -37,8 +37,11 @@ protected:
 
     virtual void executeAttack(ImperialStarship& imp, RebelStarship& reb);
 
+    SpaceBattle(std::vector<std::shared_ptr<ImperialStarship>>&& imperial_ships,
+                std::vector<std::shared_ptr<RebelStarship>>&& rebel_ships,
+                Time t0, Time t1);
+
 public:
-    SpaceBattle() = default;
     virtual ~SpaceBattle() = default;
 
     std::size_t countImperialFleet() const;
@@ -56,7 +59,7 @@ public:
         Builder& ship(std::shared_ptr<RebelStarship> ship);
         Builder& startTime(Time time);
         Builder& maxTime(Time time);
-        SpaceBattle& build();
+        SpaceBattle build();
     };
 };
 

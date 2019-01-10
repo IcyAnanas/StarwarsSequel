@@ -43,7 +43,6 @@ std::shared_ptr<ImperialStarship> createTIEFighter(ShieldPoints shield_points, A
 }
 
 // Squadron
-// todo - brute or smart? (keeping alive&dead in 2 separates structures === smart)
 Squadron::Squadron(const std::vector<std::shared_ptr<ImperialStarship>>& ships) :
 Starship(ShieldPoints{0}),
 ImperialStarship(ShieldPoints{0}, AttackPower{0}), ships(ships) {
@@ -64,6 +63,7 @@ int Squadron::countAliveShips() const {
 // wouldn't it be better if we implemented a ctor for vector&& and use move then?
 // because the creation of a new vector seems like using one too many vectors...
 // or even to totally erase destroyed ships from Squadron
+
 //Squadron::Squadron(const std::initializer_list<ImperialStarship*>& ships) :
 //    Squadron(std::vector<ImperialStarship*>(ships)) {}
 

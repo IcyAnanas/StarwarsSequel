@@ -2,7 +2,7 @@
 #include <iostream>
 #include "imperialfleet.h"
 #include "rebelfleet.h"
-//#include "battle.h"
+#include "battle.h"
 
 int main() {
     auto xwing = createXWing(100, 300000, 50);
@@ -13,24 +13,24 @@ int main() {
     auto destroyer = createImperialDestroyer(150, 20);
     auto squadron = createSquadron({deathStar, fighter});
 
-    std::cout << "Before damage" << std::endl;
-    std::cout << "Alive ships: " << squadron->countAliveShips() << std::endl;
-    std::cout << squadron->getShield() << std::endl;
-    std::cout << squadron->getAttackPower() << std::endl;
-    squadron->takeDamage(2000);
-    std::cout << "After damage" << std::endl;
-    std::cout << "Alive ships: " << squadron->countAliveShips() << std::endl;
-    std::cout << squadron->getShield() << std::endl;
-    std::cout << squadron->getAttackPower() << std::endl;
+//    std::cout << "Before damage" << std::endl;
+//    std::cout << "Alive ships: " << squadron->countAliveShips() << std::endl;
+//    std::cout << squadron->getShield() << std::endl;
+//    std::cout << squadron->getAttackPower() << std::endl;
+//    squadron->takeDamage(2000);
+//    std::cout << "After damage" << std::endl;
+//    std::cout << "Alive ships: " << squadron->countAliveShips() << std::endl;
+//    std::cout << squadron->getShield() << std::endl;
+//    std::cout << squadron->getAttackPower() << std::endl;
 
-//    auto battle = SpaceBattle::Builder()
-//        .ship(squadron);
-//        .startTime(2)
-//        .maxTime(23)
-//        .ship(xwing);
-//        .ship(explorer)
-//        .build();
-    /*
+    auto battle = SpaceBattle::Builder()
+        .ship(squadron)
+        .startTime(2)
+        .maxTime(23)
+        .ship(xwing)
+        .ship(explorer)
+        .build();
+
 
     assert(battle.countRebelFleet() == 2);
     assert(battle.countImperialFleet() == 2);
@@ -47,5 +47,5 @@ int main() {
     assert(battle.countRebelFleet() == 0);
     assert(battle.countImperialFleet() == 1);
 
-    battle.tick(1); // Wypisuje "IMPERIUM WON\n".*/
+    battle.tick(1); // Wypisuje "IMPERIUM WON\n".
 }
