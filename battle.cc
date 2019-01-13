@@ -39,7 +39,7 @@ SpaceBattle SpaceBattle::Builder::build() {
 
 std::size_t SpaceBattle::countImperialFleet() const {
     std::size_t count = 0;
-    for (auto &imp : imperial_ships) {
+    for (const auto &imp : imperial_ships) {
         count += imp->countAliveShips();
     }
 
@@ -48,7 +48,7 @@ std::size_t SpaceBattle::countImperialFleet() const {
 
 std::size_t SpaceBattle::countRebelFleet() const {
     std::size_t count = 0;
-    for (auto &reb : rebel_ships) {
+    for (const auto &reb : rebel_ships) {
            count += reb->countAliveShips();
     }
     return count;
@@ -66,7 +66,6 @@ void SpaceBattle::tick(Time timeStep) {
         } else if (impCount == 0) {
             std::cout << "REBELLION WON\n";
         }
-
         return;
     }
 

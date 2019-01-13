@@ -1,5 +1,5 @@
 #include "helper.h"
-#include <iostream>
+#include <cassert>
 
 // Starship
 ShieldPoints Starship::getShield() const {
@@ -15,6 +15,7 @@ bool Starship::isAlive() const {
 // Attacker
 Attacker::Attacker(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points), attack_power(attack_power) {
+    assert(attack_power >= AttackPower{0});
 }
 
 AttackPower Attacker::getAttackPower() const {

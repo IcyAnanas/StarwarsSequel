@@ -1,18 +1,15 @@
-#include <iostream>
 #include "imperialfleet.h"
 
 // ImperialStarship
 ImperialStarship::ImperialStarship(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
-    Attacker(shield_points, attack_power) {
-}
+    Attacker(shield_points, attack_power) {}
 
 // SingleImperialStarship
 SingleImperialStarship::SingleImperialStarship(ShieldPoints shield_points, AttackPower attack_power) :
     Starship(shield_points),
     SingleStarship(shield_points),
-    ImperialStarship(shield_points, attack_power) {
-}
+    ImperialStarship(shield_points, attack_power) {}
 
 // DeathStar
 DeathStar::DeathStar(ShieldPoints shield_points, AttackPower attack_power) :
@@ -87,7 +84,6 @@ void Squadron::takeDamage(AttackPower damage) {
     }
 }
 
-// clang suggested to move it instead - we could write a moving function as well, but do we really need to?
 std::shared_ptr<ImperialStarship> createSquadron(const std::vector<std::shared_ptr<ImperialStarship>>& ships) {
     return std::make_shared<Squadron>(Squadron(ships));
 }

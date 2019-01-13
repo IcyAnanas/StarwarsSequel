@@ -49,7 +49,6 @@ std::shared_ptr<ImperialStarship> createTIEFighter(ShieldPoints shield_points, A
 
 
 class Squadron : public ImperialStarship {
-    //todo - reference or not?
     const std::vector<std::shared_ptr<ImperialStarship>> ships;
     int alive = 0;
 

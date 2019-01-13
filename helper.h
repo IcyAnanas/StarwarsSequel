@@ -38,5 +38,4 @@ public:
 };
 
 
-
 #endif //_HELPER_H_
