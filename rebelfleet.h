@@ -1,19 +1,20 @@
 #ifndef _REBELFLEET_H_
 #define _REBELFLEET_H_
 
+
+#include "helper.h"
+#include "imperialfleet.h"
 #include <cassert>
 #include <type_traits>
 #include <memory>
-#include "helper.h"
-#include "imperialfleet.h"
 
 using Speed = int;
 
 class LimitedSpeedVehicle {
 private:
+    const Speed speed;
     void checkSpeed(Speed min, Speed max);
 protected:
-    const Speed speed;
     LimitedSpeedVehicle(Speed min, Speed max, Speed speed);
     virtual ~LimitedSpeedVehicle() = default;
 public:

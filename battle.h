@@ -12,7 +12,7 @@ public:
     TimingStrategy() = default;
     virtual ~TimingStrategy() = default;
 
-    virtual bool shouldAttack(Time t) = 0;
+    virtual bool shouldAttack() const = 0;
     virtual void stepTime(Time timeStep) = 0;
 };
 
@@ -24,7 +24,7 @@ protected:
 public:
     Timing235(Time t0, Time t1);
 
-    bool shouldAttack(Time t) override;
+    bool shouldAttack() const override;
     void stepTime(Time timeStep) override;
 };
 

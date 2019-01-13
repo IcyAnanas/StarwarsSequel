@@ -70,7 +70,7 @@ void SpaceBattle::tick(Time timeStep) {
         return;
     }
 
-    if (battleTiming->shouldAttack(timeStep)) {
+    if (battleTiming->shouldAttack()) {
         for (const auto& imp : imperial_ships) {
             for (const auto& reb : rebel_ships) {
                 if (imp->isAlive() && reb->isAlive()) {
@@ -89,16 +89,13 @@ void SpaceBattle::executeAttack(ImperialStarship &imp, RebelStarship &reb) {
 }
 
 //Timing235
-Timing235::Timing235(Time _t0, Time _t1) {
-    t0 = _t0;
-    t1 = _t1;
-}
+Timing235::Timing235(Time t0, Time t1) : t0(t0), t1(t1), currentTime(t0) {}
 
-bool Timing235::shouldAttack(Time t) {
-    if (t % 5 == 0) {
+bool Timing235::shouldAttack() const {
+    if (currentTime % 5 == 0) {
         return false;
     }
-    if (t % 2 == 0 || t % 3 == 0) {
+    if (currentTime % 2 == 0 || currentTime % 3 == 0) {
         return true;
     }
     return false;
@@ -106,7 +103,5 @@ bool Timing235::shouldAttack(Time t) {
 
 void Timing235::stepTime(Time timeStep) {
     currentTime += timeStep;
-    if (currentTime > t1) {
-        currentTime = t0 + (currentTime % t1);
-    }
+    currentTime %= t1;
 }
