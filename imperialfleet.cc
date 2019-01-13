@@ -1,4 +1,5 @@
 #include "imperialfleet.h"
+#include <iostream>
 
 // ImperialStarship
 ImperialStarship::ImperialStarship(ShieldPoints shield_points, AttackPower attack_power) :
@@ -52,17 +53,13 @@ ImperialStarship(ShieldPoints{0}, AttackPower{0}), ships(ships) {
     }
 }
 
+Squadron::Squadron(const std::initializer_list<std::shared_ptr<ImperialStarship>>& ships) :
+        Squadron(std::vector<std::shared_ptr<ImperialStarship>>(ships)) {}
+
 int Squadron::countAliveShips() const {
     return alive;
 }
 
-// todo
-// wouldn't it be better if we implemented a ctor for vector&& and use move then?
-// because the creation of a new vector seems like using one too many vectors...
-// or even to totally erase destroyed ships from Squadron
-
-//Squadron::Squadron(const std::initializer_list<ImperialStarship*>& ships) :
-//    Squadron(std::vector<ImperialStarship*>(ships)) {}
 
 void Squadron::takeDamage(AttackPower damage) {
     for(auto& ship : ships) {
@@ -88,7 +85,6 @@ std::shared_ptr<ImperialStarship> createSquadron(const std::vector<std::shared_p
     return std::make_shared<Squadron>(Squadron(ships));
 }
 
-//// todo - casting initializer_list on a vector - not sure whether it's completely valid
-//std::shared_ptr<ImperialStarship> createSquadron(const std::initializer_list<ImperialStarship*>& ships) {
-//    return createSquadron(std::vector<ImperialStarship*>(ships));
-//}
+std::shared_ptr<ImperialStarship> createSquadron(const std::initializer_list<std::shared_ptr<ImperialStarship>>& ships) {
+    return std::make_shared<Squadron>(Squadron(ships));
+}

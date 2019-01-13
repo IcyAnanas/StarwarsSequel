@@ -22,7 +22,6 @@ SpaceBattle::Builder& SpaceBattle::Builder::ship(std::shared_ptr<ImperialStarshi
 }
 
 
-
 SpaceBattle::Builder& SpaceBattle::Builder::maxTime(Time time) {
     t1 = time;
     return *this;

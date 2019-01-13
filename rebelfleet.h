@@ -1,7 +1,6 @@
 #ifndef _REBELFLEET_H_
 #define _REBELFLEET_H_
 
-
 #include "helper.h"
 #include "imperialfleet.h"
 #include <cassert>
@@ -22,8 +21,6 @@ public:
 };
 
 
-
-// todo - public, private inheritance??
 class RebelStarship : public SingleStarship, public LimitedSpeedVehicle {
 public:
     RebelStarship(ShieldPoints shield_points, Speed speed, Speed min, Speed max);

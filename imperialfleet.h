@@ -53,8 +53,8 @@ class Squadron : public ImperialStarship {
     int alive = 0;
 
 public:
-    Squadron(const std::vector<std::shared_ptr<ImperialStarship>>& ships);
-    //Squadron(const std::initializer_list<ImperialStarship>& ships);
+    explicit Squadron(const std::vector<std::shared_ptr<ImperialStarship>>& ships);
+    Squadron(const std::initializer_list<std::shared_ptr<ImperialStarship>>& ships);
 
     void takeDamage(AttackPower damage) override;
     int countAliveShips() const override;
@@ -62,6 +62,6 @@ public:
 
 std::shared_ptr<ImperialStarship> createSquadron(const std::vector<std::shared_ptr<ImperialStarship>>& ships);
 
-//Squadron* createSquadron(const std::initializer_list<ImperialStarship*>& ships);
+std::shared_ptr<ImperialStarship> createSquadron(const std::initializer_list<std::shared_ptr<ImperialStarship>>& ships);
 
 #endif //_IMPERIALFLEET_H_
