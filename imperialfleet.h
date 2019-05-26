@@ -7,6 +7,7 @@
 using ShieldPoints = int;
 using AttackPower = int;
 
+// Main class of imperial ships, all others should inherit it
 class ImperialStarship {
 protected:
     ShieldPoints shield_points;
@@ -47,14 +48,13 @@ public:
 
 TIEFighter* createTIEFighter(ShieldPoints shield_points, AttackPower attack_power);
 
+// Class representing a group of ships (possibly squadron can also have squadrons as its components)
 class Squadron : public ImperialStarship{
-    //todo - reference or not?
     const std::vector<ImperialStarship*> ships;
     int alive = 0;
 
 public:
     Squadron(const std::vector<ImperialStarship*>& ships);
-    //Squadron(const std::initializer_list<ImperialStarship>& ships);
 
     const int& numberOfAliveShips() const override;
     void takeDamage(AttackPower damage) override;
@@ -62,6 +62,5 @@ public:
 
 Squadron* createSquadron(const std::vector<ImperialStarship*>& ships);
 
-//Squadron* createSquadron(const std::initializer_list<ImperialStarship*>& ships);
 
 #endif //_IMPERIALFLEET_H_

@@ -8,16 +8,19 @@
 using Time = int;
 using T = int;
 
+// Strategy of timing used in battle - it measures time and checks whether imperial fleet should attack on tick
 class TimingStrategy {
 public:
     virtual bool shouldAttack(Time t) = 0;
 };
 
+// Implementation of a simple strategy
 class Timing235 : public TimingStrategy {
 public:
     bool shouldAttack(Time t) override;
 };
 
+// Main class - battle
 class SpaceBattle {
 protected:
     Time t0;
@@ -32,7 +35,6 @@ protected:
     virtual void executeAttack(ImperialStarship* imp, RebelStarship* reb);
 
 public:
-//    SpaceBattle() = default;
 
     std::size_t countImperialFleet() const;
     std::size_t countRebelFleet() const;

@@ -4,6 +4,8 @@
 #include "rebelfleet.h"
 #include "battle.h"
 
+// An example of usage
+
 int main() {
     auto xwing = createXWing(100, 300000, 50);
     auto explorer = createExplorer(150, 400000);
@@ -12,14 +14,6 @@ int main() {
     auto fighter = createTIEFighter(50, 9);
     auto destroyer = createImperialDestroyer(150, 20);
     auto squadron = createSquadron({deathStar, fighter});
-
-//    std::cout << "Before damage" << std::endl;
-//    std::cout << squadron.getShield() << std::endl;
-//    std::cout << squadron.getAttackPower() << std::endl;
-//    squadron.takeDamage(2000);
-//    std::cout << "After damage" << std::endl;
-//    std::cout << squadron.getShield() << std::endl;
-//    std::cout << squadron.getAttackPower() << std::endl;
 
     auto battle = SpaceBattle::Builder()
         .ship(squadron)

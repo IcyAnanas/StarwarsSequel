@@ -8,9 +8,7 @@ using Speed = int;
 using ShieldPoints = int;
 using AttackPower = int;
 
-// todo - ctors with const references, move maybe?
-// todo - no templates?
-
+// Main class of rebel fleet, all others should inherit it
 class RebelStarship {
 protected:
     const Speed speed;
